@@ -12,6 +12,9 @@
   height: 40vmin;
   pointer-events: none;
 }
+.list{
+  display: flex;
+}
 
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
