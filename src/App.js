@@ -6,10 +6,11 @@ import './App.css';
 import data from './data'
 import Detail from './pages/Detail'
 import { Routes, Route, Link, useNavigate, Outlet, useParams } from 'react-router-dom'
+import axios from 'axios';
 
 
 function App() {
-  let [products] = useState(data)
+  let [products, setProducts] = useState(data)
   let navigate = useNavigate()
   let { id } = useParams();
 
@@ -36,10 +37,22 @@ function App() {
           <div className='container p-3'>
             <div className='row p-5'>
               { products.map((a, i)=> {
-                  return(<List products= {products[i]}/>
+                  return(<List products= {products[i]} key={i}/>
                   )})}
           </div>
         </div>
+        <button onClick={()=> {
+          axios.get('http://codingapple1.github.io/shop/data2.json')
+          .then((result) => {
+            console.log(result.data);
+            let copy = [...products, ...result.data];
+            setProducts(copy);
+            console.log(copy);
+          })
+          .catch(()=>{
+            console.log('axios로 데이터가져오기 실패');
+          })
+        }}>더 보기</button>
         </>
         }/>
 
@@ -58,6 +71,7 @@ function App() {
         {/* <Route path="*" element={<div>없는 페이지</div>}/> */}
 
       </Routes>
+
 
       
     </div>
