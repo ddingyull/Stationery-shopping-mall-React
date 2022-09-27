@@ -29,6 +29,7 @@ function Detail(props){
 
   let {storage} = useContext(Context1) 
   let dispatch = useDispatch()
+
   //{}형태로 보관함해체
   // detail코드가 mount, update(=rerender) 시 useEffect함수가 실행됨 (컴포넌트 라이프사이클에 맞춰 실행되는 함수)
   // why?when? page rendering이 끝난 후 실행되는 함수이기 때문에 오래걸리는 부분은 useEffect에 넣어서 html로딩부터 시켜줄 수 있음 
@@ -51,6 +52,15 @@ function Detail(props){
       alert('죄송합니다만 숫자만 입력 가능합니다.')
       } 
     }, [num])
+
+  useEffect(()=>{
+    let get = localStorage.getItem('watched')
+    get = JSON.parse(get)
+    get.push(dataId.id)
+    get = new Set(get) // 중복 없애주는 set 활용한 후 
+    get = Array.from(get) // 다시 array로 바꿔주기
+    localStorage.setItem('watched', JSON.stringify(get))
+  },[])
 
   return(
     <div className='container'>
