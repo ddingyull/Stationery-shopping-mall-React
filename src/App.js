@@ -1,16 +1,21 @@
-import { useState } from 'react';
+import { createContext, useState } from 'react';
 // bootstrap import해오기
 import { Button, Container, Navbar, Nav } from 'react-bootstrap';
 import homeimg from './image/diaryHome.png';
 import './App.css';
 import data from './data'
-import Detail from './pages/Detail'
+import Detail from './routes/Detail'
 import { Routes, Route, Link, useNavigate, Outlet, useParams } from 'react-router-dom'
 import axios from 'axios';
+import Cart from './routes/Cart.js';
+
+// Context API사용하기 위한 3줄
+export let Context1 = createContext() //context 곧,보관함 하나 만들기
 
 
 function App() {
   let [products, setProducts] = useState(data)
+  let [storage, setStorage] = useState([10, 11, 12])
   let navigate = useNavigate()
   let { id } = useParams();
 
@@ -41,7 +46,7 @@ function App() {
                   )})}
           </div>
         </div>
-        <button onClick={()=> {
+        <button class="button-60" onClick={()=> {
           axios.get('http://codingapple1.github.io/shop/data2.json')
           .then((result) => {
             console.log(result.data);
@@ -56,8 +61,14 @@ function App() {
         </>
         }/>
 
-        <Route path="/detail/:id" element={<Detail products= {products} />} />
+        <Route path="/detail/:id" element={
+        <Context1.Provider value={{ storage }}>
+          <Detail products= {products} />
+        </Context1.Provider>
+        } />
 
+        <Route path="/cart" element={<Cart/>}></Route>
+        
         <Route path="/event" element={<Event/>}>
           <Route path="one" element={<p>첫 주문 시 스티커 서비스</p>} />  
           <Route path="two" element={<p>생일기념 쿠폰 event</p>} />  
