@@ -181,3 +181,9 @@ function View(props) {
 }
 {/* <img src={process.env.PUBLIC_URL + '경로 /logo.png이런식'}></img> */}
 export default App;
+
+
+
+/**
+ * 1. va
+*/
